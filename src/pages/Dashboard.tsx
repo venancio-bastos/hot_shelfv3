@@ -1,6 +1,6 @@
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { mockData } from "../data/mockData";
-import { profiles } from "../data/profilesData";
+// import { profiles } from "../data/profilesData";
 import { useState } from "react";
 import Header from "../components/Header";
 import AdminPanel from "../components/AdminPanel";
@@ -18,8 +18,15 @@ function getDetectionStatus(
 const Dashboard = () => {
   const navigate = useNavigate();
   const { cameraId } = useParams();
-  const { detections, currentUser, switchUser, isDarkMode, toggleDarkMode } =
-    useAppContext();
+  const {
+    detections,
+    currentUser,
+    switchUser,
+    isDarkMode,
+    toggleDarkMode,
+    setSelectedThresholdProduct,
+  } = useAppContext();
+
   const [showAdminPanel, setShowAdminPanel] = useState(false);
 
   const criticalDetections = detections.filter(

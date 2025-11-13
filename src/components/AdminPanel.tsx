@@ -2,13 +2,11 @@ import { X } from "lucide-react";
 
 export default function AdminPanel({
   currentUser,
-  profiles,
   onClose,
   onSwitchUser,
   onUpdatePhoto,
 }: {
   currentUser: any;
-  profiles: any;
   onClose: () => void;
   onSwitchUser: (role: "worker" | "administrator") => void;
   onUpdatePhoto: (url: string) => void;

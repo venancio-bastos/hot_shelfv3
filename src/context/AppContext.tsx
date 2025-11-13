@@ -4,7 +4,7 @@ export type Detection = (typeof mockData.detections)[0];
 
 type User = {
   name: string;
-  role: "Worker" | "Administrator";
+  role: "worker" | "administrator";
   photo: string;
 };
 
@@ -17,11 +17,14 @@ type AppContextType = {
   isDarkMode: boolean;
   toggleDarkMode: () => void;
   currentUser: User;
-  switchUser: (role: "Worker" | "Administrator") => void;
+  switchUser: (role: "worker" | "administrator") => void;
   selectedSlot: Detection | null;
   setSelectedSlot: (d: Detection | null) => void;
   selectedThresholdProduct: string | null;
   setSelectedThresholdProduct: (p: string | null) => void;
+  thresholdModalProduct: string | null;
+  openThresholdModal: (productName: string) => void;
+  closeThresholdModal: () => void;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -32,25 +35,25 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [selectedThresholdProduct, setSelectedThresholdProduct] = useState<
     string | null
   >(null);
-  const [currentFilter, setCurrentFilter] = useState<FilterType>("all"); // ✅ added filter state
+  const [currentFilter, setCurrentFilter] = useState<FilterType>("all");
 
   const [currentUser, setCurrentUser] = useState<User>({
     name: "Trabalhador",
-    role: "Worker",
+    role: "worker",
     photo:
       "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1",
   });
 
   const profiles = {
-    Worker: {
+    worker: {
       name: "Trabalhador",
-      role: "Worker" as const,
+      role: "worker" as const,
       photo:
         "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1",
     },
-    Administrator: {
+    administrator: {
       name: "Administrador",
-      role: "Administrator" as const,
+      role: "administrator" as const,
       photo:
         "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1",
     },
@@ -66,6 +69,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (currentFilter === "all") return true;
     return getDetectionStatus(d) === currentFilter;
   });
+  const [thresholdModalProduct, setThresholdModalProduct] = useState<
+    string | null
+  >(null);
 
   return (
     <AppContext.Provider
@@ -81,6 +87,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setSelectedSlot,
         selectedThresholdProduct,
         setSelectedThresholdProduct,
+        thresholdModalProduct,
+        openThresholdModal: (productName: string) =>
+          setThresholdModalProduct(productName),
+        closeThresholdModal: () => setThresholdModalProduct(null),
       }}
     >
       {children}
